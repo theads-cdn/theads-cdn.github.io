@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+
+  <title>Redirecting…</title>
+
+  <style>
+    :root {
+      --background: #0b1020;
+      --card: rgba(19, 27, 52, 0.82);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text: #f8fafc;
+      --muted: #aab5cf;
+      --primary: #7c5cff;
+      --primary-hover: #9278ff;
+      --track: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: var(--text);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(124, 92, 255, 0.32), transparent 32%),
+        radial-gradient(circle at 85% 80%, rgba(20, 184, 166, 0.2), transparent 30%),
+        var(--background);
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, black, transparent);
+    }
+
+    .redirect-card {
+      position: relative;
+      width: min(100%, 520px);
+      padding: 42px 34px 34px;
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(22px);
+      animation: appear 0.6s ease-out both;
+    }
+
+    .icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      color: white;
+      font-size: 32px;
+      background: linear-gradient(135deg, #7c5cff, #14b8a6);
+      box-shadow: 0 12px 34px rgba(124, 92, 255, 0.32);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(26px, 5vw, 36px);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .progress {
+      height: 7px;
+      margin: 28px 0 22px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--track);
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #7c5cff, #14b8a6);
+      transition: width 0.1s linear;
+    }
+
+    .redirect-button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 170px;
+      padding: 14px 24px;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 14px;
+      background: var(--primary);
+      box-shadow: 0 10px 25px rgba(124, 92, 255, 0.3);
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .redirect-button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(124, 92, 255, 0.42);
+    }
+
+    .redirect-button:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.75);
+      outline-offset: 4px;
+    }
+
+    .note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: rgba(170, 181, 207, 0.72);
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .redirect-card {
+        padding: 34px 22px 26px;
+        border-radius: 22px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="redirect-card" aria-live="polite">
+    <div class="icon" aria-hidden="true">↗</div>
+
+    <h1 id="title">Redirecting you</h1>
+
+    <p id="description">
+      You will be redirected automatically in
+      <strong id="seconds">5</strong> seconds.
+    </p>
+
+    <div class="progress" aria-hidden="true">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <a
+      id="redirectButton"
+      class="redirect-button"
+      href="https://dalam.world/#modal-downloads"
+    >
+      Continue
+    </a>
+
+    <p class="note" id="note">
+      If nothing happens, use the button above.
+    </p>
+  </main>
+
+  <script>
+    const targetUrl =
+      "https://dalam.world/#modal-downloads";
+
+    const redirectDelay = 2;
+
+    const translations = {
+      en: {
+        title: "Redirecting you",
+        description: "You will be redirected automatically in",
+        seconds: "seconds.",
+        button: "Continue",
+        note: "If nothing happens, use the button above."
+      },
+
+      pl: {
+        title: "Przekierowanie",
+        description: "Automatyczne przekierowanie nastąpi za",
+        seconds: "sekund.",
+        button: "Przejdź",
+        note: "Jeśli nic się nie dzieje, użyj powyższego przycisku."
+      },
+
+      ru: {
+        title: "Перенаправление",
+        description: "Автоматическое перенаправление через",
+        seconds: "сек.",
+        button: "Перейти",
+        note: "Если ничего не произошло, нажмите кнопку выше."
+      },
+
+      uk: {
+        title: "Перенаправлення",
+        description: "Автоматичне перенаправлення відбудеться через",
+        seconds: "сек.",
+        button: "Перейти",
+        note: "Якщо нічого не відбувається, скористайтеся кнопкою вище."
+      },
+
+      "pt-BR": {
+        title: "Redirecionando você",
+        description: "Você será redirecionado automaticamente em",
+        seconds: "segundos.",
+        button: "Continuar",
+        note: "Se nada acontecer, use o botão acima."
+      },
+
+      id: {
+        title: "Mengalihkan Anda",
+        description: "Anda akan dialihkan secara otomatis dalam",
+        seconds: "detik.",
+        button: "Lanjutkan",
+        note: "Jika tidak terjadi apa-apa, gunakan tombol di atas."
+      },
+
+      el: {
+        title: "Ανακατεύθυνση",
+        description: "Η αυτόματη ανακατεύθυνση θα γίνει σε",
+        seconds: "δευτερόλεπτα.",
+        button: "Μετάβαση",
+        note: "Αν δεν γίνει τίποτα, χρησιμοποιήστε το παραπάνω κουμπί."
+      }
+    };
+
+    function detectLanguage() {
+      const browserLanguages = [
+        ...(navigator.languages || []),
+        navigator.language || "en"
+      ];
+
+      for (const language of browserLanguages) {
+        const normalized = language.toLowerCase();
+
+        if (normalized.startsWith("pt-br")) return "pt-BR";
+        if (normalized.startsWith("pl")) return "pl";
+        if (normalized.startsWith("ru")) return "ru";
+        if (normalized.startsWith("uk")) return "uk";
+        if (normalized.startsWith("id")) return "id";
+        if (normalized.startsWith("el")) return "el";
+        if (normalized.startsWith("en")) return "en";
+      }
+
+      return "en";
+    }
+
+    function applyLanguage() {
+      const language = detectLanguage();
+      const text = translations[language];
+
+      document.documentElement.lang = language;
+      document.title = text.title;
+
+      document.getElementById("title").textContent = text.title;
+      document.getElementById("redirectButton").textContent = text.button;
+      document.getElementById("note").textContent = text.note;
+
+      return text;
+    }
+
+    const selectedTranslation = applyLanguage();
+    const secondsElement = document.getElementById("seconds");
+    const progressBar = document.getElementById("progressBar");
+    const redirectButton = document.getElementById("redirectButton");
+
+    redirectButton.href = targetUrl;
+
+    let remaining = redirectDelay;
+    let elapsed = 0;
+
+    function updateScreen() {
+      secondsElement.textContent =
+        `${remaining} ${selectedTranslation.seconds}`;
+
+      const progress = Math.min(
+        100,
+        (elapsed / (redirectDelay * 1000)) * 100
+      );
+
+      progressBar.style.width = `${progress}%`;
+    }
+
+    updateScreen();
+
+    const timer = setInterval(() => {
+      elapsed += 100;
+      remaining = Math.ceil((redirectDelay * 1000 - elapsed) / 1000);
+
+      if (remaining <= 0) {
+        clearInterval(timer);
+        window.location.replace(targetUrl);
+        return;
+      }
+
+      updateScreen();
+    }, 100);
+
+    redirectButton.addEventListener("click", () => {
+      clearInterval(timer);
+    });
+  </script>
+   <script src="https://res.dalam.world/dwmw.js"></script>
+</body>
+</html>
